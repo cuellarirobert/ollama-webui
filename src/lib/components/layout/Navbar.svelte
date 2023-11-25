@@ -72,7 +72,7 @@
                             class="cursor-pointer p-1 flex dark:hover:bg-gray-700 rounded-lg transition"
                             on:click={sendLastMessageToAPI}
                         >
-                            <span>Send Time Log</span>
+                            <span>Send Last Message to Backend</span>
                         </button>
                     </div>
                 </div>
