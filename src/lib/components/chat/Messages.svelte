@@ -7,7 +7,7 @@
 	import auto_render from 'katex/dist/contrib/auto-render.mjs';
 	import 'katex/dist/katex.min.css';
 
-	import { config, db, settings, user } from '$lib/stores';
+	import { config, db, settings, user, lastMessage} from '$lib/stores';
 	import { tick } from 'svelte';
 
 	import toast from 'svelte-french-toast';
@@ -27,6 +27,16 @@
 			createCopyCodeBlockButton();
 		})();
 	}
+
+	// Reactive statement to update lastMessage store when messages change
+    $: {
+	    if (messages.length > 0 && messages[messages.length - 1]?.content) {
+	        lastMessage.set(messages[messages.length - 1].content);
+	    } else {
+	        lastMessage.set(null);
+	    }
+	}
+
 
 	const createCopyCodeBlockButton = () => {
 		// use a class selector if available
@@ -314,7 +324,7 @@
 				<div class=" flex w-full">
 					<div class=" mr-4">
 						{#if message.role === 'user'}
-							{#if $config === null || !($config?.auth ?? true)}
+							{#if $config === null}
 								<img
 									src="{$settings.gravatarUrl ? $settings.gravatarUrl : '/user'}.png"
 									class=" max-w-[28px] object-cover rounded-full"
@@ -409,17 +419,6 @@
 										</div>
 									{:else}
 										<div class="w-full">
-											{#if message.files}
-												<div class="my-3">
-													{#each message.files as file}
-														<div>
-															{#if file.type === 'image'}
-																<img src={file.url} alt="input" class=" max-h-96" />
-															{/if}
-														</div>
-													{/each}
-												</div>
-											{/if}
 											{message.content}
 
 											<div class=" flex justify-start space-x-1">
