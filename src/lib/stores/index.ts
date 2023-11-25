@@ -11,3 +11,7 @@ export const chats = writable([]);
 export const models = writable([]);
 export const settings = writable({});
 export const showSettings = writable(false);
+
+// Store for tracking the last message
+export const lastMessage = writable(null);
+export const promptStore = writable('');
